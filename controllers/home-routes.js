@@ -3,6 +3,7 @@ const router = require("express").Router();
 const { User, Post, Comment } = require("../models");
 
 router.get("/", async (req, res) => {
+    
   const postData = await Post.findAll({
     include: [
       {
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
       },
     ],
   });
-  
+
   const posts = postData.map((post) => post.get({ plain: true }));
 
   try {
@@ -25,6 +26,7 @@ router.get("/", async (req, res) => {
   } catch (err) {
     res.json(err);
   }
+
 });
 
 module.exports = router;
