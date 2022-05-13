@@ -72,7 +72,7 @@ router.put('/:id', async (req, res) => {
     try {
 
         if(!updatedPost) {
-            res.status(404).json({ message: 'Could not find post'})
+            res.status(404).json({ message: 'Post could not be found.'})
         }
         if(updatedPost.id === req.session.id) {
             await updatedPost.update({ content: req.body.content})
@@ -80,6 +80,29 @@ router.put('/:id', async (req, res) => {
   
         res.json(updatedPost)
   
+    } catch (err) {
+        res.json(err)
+    }
+
+});
+
+router.delete('/:id', async (req, res) => {
+
+    try {
+
+        const deletedPost = await Post.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+
+        if(updatedPost.user_id == req.session.id) {
+            await deletedPost.destroy()
+            res.json(deletedPost)
+        } else {
+            res.json({ message: 'You are not the owner of this post.'})
+        }
+
     } catch (err) {
         res.json(err)
     }
