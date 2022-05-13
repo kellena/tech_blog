@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post("/:id", withAuth, async (req, res) => {
-    
+
     const newComment = await Comment.create({
         comment: req.body.comment,
         post_id: req.params.id,
@@ -55,6 +55,33 @@ router.post("/:id", withAuth, async (req, res) => {
         res.json(newComment);
     } catch (err) {
         res.json(err);
+    }
+
+});
+
+router.put('/:id', async (req, res) => {
+
+    const updatedPost = await Post.findOne({
+        where: {
+            id: req.params.id
+        }
+    });
+
+    console.log(updatedPost.user_id);
+
+    try {
+
+        if(!updatedPost) {
+            res.status(404).json({ message: 'Could not find post'})
+        }
+        if(updatedPost.id === req.session.id) {
+            await updatedPost.update({ content: req.body.content})
+        }
+  
+        res.json(updatedPost)
+  
+    } catch (err) {
+        res.json(err)
     }
 
 });
