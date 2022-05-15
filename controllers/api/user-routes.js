@@ -3,14 +3,17 @@ const router = require('express').Router()
 const { User } = require('../../models')
 
 router.get('/login', async (req, res) => {
+
     try {
         res.render('login')
     } catch (err) {
         res.json(err)
     }
+
 })
 
 router.post("/login", async (req, res) => {
+
     try {
         const user = await User.findOne({
             where: {
@@ -41,15 +44,19 @@ router.post("/login", async (req, res) => {
 });
 
 router.get('/register', async (req, res) => {
+
     try {
         res.render('register')
     } catch (err) {
         res.json(err)
     }
+
 })
 
 router.post("/register", async (req, res) => {
+
     try {
+        
         const user = await User.create({
             username: req.body.username,
             password: req.body.password,
@@ -67,7 +74,18 @@ router.post("/register", async (req, res) => {
 
 });
 
-// build logout using destroy
+router.post("/logout", (req, res) => {
+
+    if (req.session.logged_in) {
+        req.session.destroy(() => {
+        res.status(204).end();
+    });
+
+    } else {
+        res.status(204).end();
+    }
+
+});
 
 
 module.exports = router;
