@@ -5,27 +5,32 @@ const { User, Post, Comment } = require('../../models')
 router.get('/', async (req, res) => {
 
     const postData = await Post.findAll({
+
         where: {
           id: req.params.id,
         },
+
         include: [
-          {
-            model: User,
-            attributes: ["username"],
-          },
+            {
+                model: User,
+                attributes: ["username"],
+            },
         ],
     });
 
     const commentData = await Comment.findAll({
+
         where: {
             post_id: req.params.id,
         },
+
         include: [
             {
-            model: User,
-            attributes: ["username"],
+                model: User,
+                attributes: ["username"],
             },
         ],
+
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
@@ -36,6 +41,7 @@ router.get('/', async (req, res) => {
             posts,
             comments,
         });
+
     } catch (err) {
         res.json(err);
     }
@@ -50,7 +56,6 @@ router.post("/:id", withAuth, async (req, res) => {
         user_id: req.session.user_id,
     });
 
-    console.log(newComment);
     try {
         res.json(newComment);
     } catch (err) {
@@ -66,8 +71,6 @@ router.put('/:id', async (req, res) => {
             id: req.params.id
         }
     });
-
-    console.log(updatedPost.user_id);
 
     try {
 
