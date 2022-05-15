@@ -100,7 +100,7 @@ router.delete('/:id', async (req, res) => {
             await deletedPost.destroy()
             res.json(deletedPost)
         } else {
-            res.json({ message: 'You are not the owner of this post.'})
+            res.json({ message: 'Only the owner of the post can delete it.'})
         }
 
     } catch (err) {
