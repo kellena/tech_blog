@@ -1,0 +1,12 @@
+<div class="home-main">
+
+    {{#each posts as |post|}}
+
+        <div class="post-card card" data-post="{{id}}">
+            <h2 id="post-title" data-post="{{id}}">{{title}}</h2>
+            <p data-post="{{id}}">Date created: {{created}}</p>
+        </div>
+
+    {{/each}}
+    
+</div>
